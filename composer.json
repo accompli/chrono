@@ -1,0 +1,33 @@
+{
+    "name": "accompli/chrono",
+    "type": "library",
+    "description": "Version Control System wrapper for PHP.",
+    "keywords": [
+        "Accompli", "VCS", "GIT", "SVN", "Subversion"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Niels Nijens",
+            "email": "nijens.niels@gmail.com",
+            "role": "Lead developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.4",
+        "satooshi/php-coveralls": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Accompli\\Chrono\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Accompli\\Chrono\\Test\\": "tests/"
+        }
+    }
+}
