@@ -74,7 +74,7 @@ class RepositoryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests if Repository::getAdapter returns null when class is not an adapter implementing the AdapterInterface
+     * Tests if Repository::getAdapter returns null when class is not an adapter implementing the AdapterInterface.
      */
     public function testGetAdapterReturnsNullWhenClassIsNoAdapter()
     {
