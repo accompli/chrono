@@ -40,6 +40,7 @@ class Repository implements RepositoryInterface
      * @var array
      */
     private $adapters = array(
+        'Accompli\Chrono\Adapter\GitAdapter',
     );
 
     /**
