@@ -13,14 +13,33 @@ use PHPUnit_Framework_TestCase;
 class ProcessExecutorTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Test if ProcessExecutor::setWorkingDirectory sets the property.
+     * Tests if ProcessExecutor::isDirectory returns true when the supplied path is a directory.
      */
-    public function testSetWorkingDirectory()
+    public function testIsDirectoryReturnsTrueForExistingDirectory()
     {
         $processExecutor = new ProcessExecutor();
-        $processExecutor->setWorkingDirectory(__DIR__);
 
-        $this->assertAttributeSame(__DIR__, 'workingDirectory', $processExecutor);
+        $this->assertTrue($processExecutor->isDirectory(__DIR__));
+    }
+
+    /**
+     * Tests if ProcessExecutor::isDirectory returns false when the supplied path is a non-existing directory.
+     */
+    public function testIsDirectoryReturnsFalseForNonExistingDirectory()
+    {
+        $processExecutor = new ProcessExecutor();
+
+        $this->assertFalse($processExecutor->isDirectory(__DIR__.'/non-existing'));
+    }
+
+    /**
+     * Tests if ProcessExecutor::isDirectory returns false when the supplied path is a file.
+     */
+    public function testIsDirectoryReturnsFalseForFile()
+    {
+        $processExecutor = new ProcessExecutor();
+
+        $this->assertFalse($processExecutor->isDirectory(__FILE__));
     }
 
     /**
@@ -30,19 +49,7 @@ class ProcessExecutorTest extends PHPUnit_Framework_TestCase
     {
         $processExecutor = new ProcessExecutor();
 
-        $this->assertAttributeSame(null, 'workingDirectory', $processExecutor);
         $this->assertSame(realpath(__DIR__.'/../../'), $processExecutor->getWorkingDirectory());
-    }
-
-    /**
-     * Tests if ProcessExecutor::getWorkingDirectory returns the working directory that has been set through ProcessExecutor::setWorkingDirectory.
-     */
-    public function testGetWorkingDirectoryReturnsSetWorkingDirectory()
-    {
-        $processExecutor = new ProcessExecutor();
-        $processExecutor->setWorkingDirectory(__DIR__);
-
-        $this->assertSame(__DIR__, $processExecutor->getWorkingDirectory());
     }
 
     /**

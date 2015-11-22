@@ -75,6 +75,21 @@ class ProcessExecutionResult
     }
 
     /**
+     * Returns the output separated by newline as array.
+     *
+     * @return array
+     */
+    public function getOutputAsArray()
+    {
+        $output = trim($this->getOutput());
+        if (empty($output) === false) {
+            return preg_split('{\r?\n}', $output);
+        }
+
+        return array();
+    }
+
+    /**
      * Returns the error output.
      *
      * @return string|null
