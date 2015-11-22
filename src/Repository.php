@@ -123,7 +123,7 @@ class Repository implements RepositoryInterface
     {
         $this->initialize();
 
-        $this->repositoryAdapter->checkout($version);
+        return $this->repositoryAdapter->checkout($version);
     }
 
     /**
