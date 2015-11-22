@@ -36,6 +36,8 @@ interface AdapterInterface
      * Checks out a branch or tag from the repository.
      *
      * @param string $version
+     *
+     * @return bool
      */
     public function checkout($version);
 }
