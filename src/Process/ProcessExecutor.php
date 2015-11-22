@@ -12,42 +12,34 @@ use Symfony\Component\Process\Process;
 class ProcessExecutor implements ProcessExecutorInterface
 {
     /**
-     * The path to the execution working directory.
-     *
-     * @var string
+     * {@inheritdoc}
      */
-    private $workingDirectory;
+    public function isDirectory($path)
+    {
+        return is_dir($path);
+    }
 
     /**
-     * Returns the path to the execution working directory.
+     * Returns the current working directory.
      *
      * @return string
      */
     public function getWorkingDirectory()
     {
-        if ($this->workingDirectory === null) {
-            return getcwd();
-        }
-
-        return $this->workingDirectory;
-    }
-
-    /**
-     * Sets the path to the execution working directory.
-     *
-     * @param string $workingDirectory
-     */
-    public function setWorkingDirectory($workingDirectory)
-    {
-        $this->workingDirectory = $workingDirectory;
+        return getcwd();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute($command)
+    public function execute($command, $workingDirectory = null)
     {
-        $process = new Process($command, $this->getWorkingDirectory());
+        if ($workingDirectory === null) {
+            $workingDirectory = $this->getWorkingDirectory();
+        }
+
+        $process = new Process($command, $workingDirectory);
+        $process->setTimeout(300);
         $process->run();
 
         return new ProcessExecutionResult($process->getExitCode(), $process->getOutput(), $process->getErrorOutput());
