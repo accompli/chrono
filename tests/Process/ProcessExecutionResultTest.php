@@ -65,6 +65,18 @@ class ProcessExecutionResultTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests if ProcessExecutionResult::getOutputAsArray returns the value of ProcessExecutionResult::getOutput, but separated by newline.
+     *
+     * @dataProvider provideGetOutputAsArray
+     */
+    public function testGetOutputAsArray($output, array $expectedArray)
+    {
+        $processExecutionResult = new ProcessExecutionResult(0, $output, 'Error');
+
+        $this->assertSame($expectedArray, $processExecutionResult->getOutputAsArray());
+    }
+
+    /**
      * Tests if ProcessExecutionResult::getErrorOutput returns the same value as during construction of ProcessExecutionResult.
      */
     public function testGetErrorOutput()
@@ -72,5 +84,22 @@ class ProcessExecutionResultTest extends PHPUnit_Framework_TestCase
         $processExecutionResult = new ProcessExecutionResult(0, 'Output', 'Error');
 
         $this->assertSame('Error', $processExecutionResult->getErrorOutput());
+    }
+
+    /**
+     * Returns the test data array for testGetOutputAsArray.
+     *
+     * @return array
+     */
+    public function provideGetOutputAsArray()
+    {
+        return array(
+            array('', array()),
+            array('Output line1', array('Output line1')),
+            array("Output line1\n", array('Output line1')),
+            array("Output line1\nOutput line2", array('Output line1', 'Output line2')),
+            array("Output line1\r\n", array('Output line1')),
+            array("Output line1\r\nOutput line2", array('Output line1', 'Output line2')),
+        );
     }
 }
