@@ -18,13 +18,21 @@ $ composer require accompli/chrono
 ```
 
 ## Usage
+The `Repository` class will detect which registered VCS adapter to use based on the URL of the repository.
 
 ```php
+<?php
 
+use Accompli\Chrono\Process\ProcessExecutor;
 use Accompli\Chrono\Repository;
 
-$repository = new Repository('https://github.com/accompli/chrono.git');
-$repository->checkout();
+$repository = new Repository('https://github.com/accompli/chrono.git', '/vcs/checkout/directory', new ProcessExecutor());
+
+$repository->getBranches(); // Returns an array with all available branches in the repository.
+
+$repository->getTags(); // Returns an array with all available tags in the repository.
+
+$repository->checkout('0.1.0'); // Creates or updates a checkout of a tag or branch in the repository directory.
 
 ```
 
@@ -35,6 +43,7 @@ Chrono uses [Semantic Versioning 2][link-semver] for new versions.
 
 - [Niels Nijens][link-author]
 - [All Contributors][link-contributors]
+- Inspired by the VCS drivers of Composer.
 
 ## License
 
