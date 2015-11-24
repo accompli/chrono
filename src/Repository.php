@@ -41,6 +41,7 @@ class Repository implements RepositoryInterface
      */
     private $adapters = array(
         'Accompli\Chrono\Adapter\GitAdapter',
+        'Accompli\Chrono\Adapter\SubversionAdapter',
     );
 
     /**
