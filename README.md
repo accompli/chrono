@@ -14,7 +14,7 @@ Version Control System wrapper for PHP.
 Run the following command to add the package to your composer.json:
 
 ``` bash
-$ composer require accompli/chrono
+$ composer require accompli/chrono:^0.1
 ```
 
 ## Usage
