@@ -63,6 +63,6 @@ class ProcessExecutorTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Accompli\Chrono\Process\ProcessExecutionResult', $processExecutionResult);
         $this->assertSame(0, $processExecutionResult->getExitCode());
         $this->assertSame('test'.PHP_EOL, $processExecutionResult->getOutput());
-        $this->assertSame(null, $processExecutionResult->getErrorOutput());
+        $this->assertEquals('', $processExecutionResult->getErrorOutput());
     }
 }
