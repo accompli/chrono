@@ -245,14 +245,16 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
         $processExecutorMock->expects($this->once())
                 ->method('isDirectory')
                 ->willReturn(true);
-        $processExecutorMock->expects($this->exactly(3))
+        $processExecutorMock->expects($this->exactly(4))
                 ->method('execute')
                 ->withConsecutive(
                         array($this->equalTo('git rev-parse --is-inside-work-tree'), $this->equalTo('/git/working-directory')),
                         array($this->equalTo('git fetch')),
-                        array($this->equalTo($checkoutCommand), $this->equalTo('/git/working-directory'))
+                        array($this->equalTo($checkoutCommand), $this->equalTo('/git/working-directory')),
+                        array($this->equalTo('git pull'), $this->equalTo('/git/working-directory'))
                 )
                 ->willReturnOnConsecutiveCalls(
+                        new ProcessExecutionResult(0, '', ''),
                         new ProcessExecutionResult(0, '', ''),
                         new ProcessExecutionResult(0, '', ''),
                         new ProcessExecutionResult(0, '', '')

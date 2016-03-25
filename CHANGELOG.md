@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning 2](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+* Fixed updating the current branch of a git clone with the checkout command.
 
 ## [0.2.0] - 2016-03-31
 ### Added

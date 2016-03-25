@@ -82,7 +82,7 @@ class GitAdapter extends AbstractAdapter
 
         $escapedVersion = ProcessUtils::escapeArgument($version);
         if ($this->processExecutor->isDirectory($this->repositoryDirectory) && $this->processExecutor->execute('git rev-parse --is-inside-work-tree', $this->repositoryDirectory)->isSuccessful()) {
-            $checkoutSuccesful = ($this->processExecutor->execute('git fetch', $this->repositoryDirectory)->isSuccessful() && $this->processExecutor->execute(sprintf('git checkout %s', $escapedVersion), $this->repositoryDirectory)->isSuccessful());
+            $checkoutSuccesful = ($this->processExecutor->execute('git fetch', $this->repositoryDirectory)->isSuccessful() && $this->processExecutor->execute(sprintf('git checkout %s', $escapedVersion), $this->repositoryDirectory)->isSuccessful() && $this->processExecutor->execute('git pull', $this->repositoryDirectory)->isSuccessful());
         } else {
             $escapedRepositoryUrl = ProcessUtils::escapeArgument($this->repositoryUrl);
             $escapedRepositoryDirectory = ProcessUtils::escapeArgument($this->repositoryDirectory);
