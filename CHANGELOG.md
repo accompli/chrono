@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning 2](http://semver.org/).
 ### Fixed
 * Fixed updating the current branch of a git clone with the checkout command.
 
-## [0.2.0] - 2016-03-31
+## [0.2.0] - 2016-03-21
 ### Added
 
 * Composer dependency compatibility with version 3 of the Symfony Process component.
