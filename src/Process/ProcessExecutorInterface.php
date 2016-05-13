@@ -27,4 +27,11 @@ interface ProcessExecutorInterface
      * @return ProcessExecutionResult
      */
     public function execute($command, $workingDirectory = null);
+
+    /**
+     * Returns the ProcessExecutionResult instance of the last executed command.
+     *
+     * @return ProcessExecutionResult
+     */
+    public function getLastProcessExecutionResult();
 }

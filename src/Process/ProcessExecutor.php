@@ -12,6 +12,13 @@ use Symfony\Component\Process\Process;
 class ProcessExecutor implements ProcessExecutorInterface
 {
     /**
+     * The ProcessExecutionResult instance of the last executed command.
+     *
+     * @var ProcessExecutionResult
+     */
+    private $lastProcessExecutionResult;
+
+    /**
      * {@inheritdoc}
      */
     public function isDirectory($path)
@@ -42,6 +49,16 @@ class ProcessExecutor implements ProcessExecutorInterface
         $process->setTimeout(300);
         $process->run();
 
-        return new ProcessExecutionResult($process->getExitCode(), $process->getOutput(), $process->getErrorOutput());
+        $this->lastProcessExecutionResult = new ProcessExecutionResult($process->getExitCode(), $process->getOutput(), $process->getErrorOutput());
+
+        return $this->lastProcessExecutionResult;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLastProcessExecutionResult()
+    {
+        return $this->lastProcessExecutionResult;
     }
 }
