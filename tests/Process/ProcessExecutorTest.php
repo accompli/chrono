@@ -65,4 +65,15 @@ class ProcessExecutorTest extends PHPUnit_Framework_TestCase
         $this->assertSame('test'.PHP_EOL, $processExecutionResult->getOutput());
         $this->assertEquals('', $processExecutionResult->getErrorOutput());
     }
+
+    /**
+     * Tests if ProcessExecutor::getLastProcessExecutionResult returns the same ProcessExecutionResult instance as ProcessExecutor::execute.
+     */
+    public function testGetLastProcessExecutionResult()
+    {
+        $processExecutor = new ProcessExecutor();
+        $processExecutionResult = $processExecutor->execute('echo test');
+
+        $this->assertSame($processExecutionResult, $processExecutor->getLastProcessExecutionResult());
+    }
 }
