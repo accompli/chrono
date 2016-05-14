@@ -85,50 +85,55 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
     {
         $provideTest = array();
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+                ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('execute')
                 ->with($this->equalTo('git --version'))
                 ->willReturn(new ProcessExecutionResult(1, '', ''));
         $provideTest[] = array('https://github.com/accompli/chrono.git', $processExecutorMock, false);
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+                ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('execute')
                 ->with($this->equalTo('git --version'))
                 ->willReturn(new ProcessExecutionResult(0, '', ''));
         $provideTest[] = array('https://github.com/accompli/chrono.git', $processExecutorMock, true);
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+                ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('execute')
                 ->with($this->equalTo('git --version'))
                 ->willReturn(new ProcessExecutionResult(0, '', ''));
         $provideTest[] = array('git@github.com:accompli/chrono.git', $processExecutorMock, true);
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+                ->getMock();
         $processExecutorMock->expects($this->exactly(2))
                 ->method('execute')
                 ->withConsecutive(
-                        array($this->equalTo('git --version')),
-                        array($this->equalTo(sprintf('git ls-remote --heads %s', ProcessUtils::escapeArgument('user@example.com:accompli/chrono'))))
+                    array($this->equalTo('git --version')),
+                    array($this->equalTo(sprintf('git ls-remote --heads %s', ProcessUtils::escapeArgument('user@example.com:accompli/chrono'))))
                 )
                 ->willReturnOnConsecutiveCalls(
-                        new ProcessExecutionResult(0, '', ''),
-                        new ProcessExecutionResult(0, '', '')
+                    new ProcessExecutionResult(0, '', ''),
+                    new ProcessExecutionResult(0, '', '')
                 );
         $provideTest[] = array('user@example.com:accompli/chrono', $processExecutorMock, true);
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+                ->getMock();
         $processExecutorMock->expects($this->exactly(2))
                 ->method('execute')
                 ->withConsecutive(
-                        array($this->equalTo('git --version')),
-                        array($this->equalTo(sprintf('git ls-remote --heads %s', ProcessUtils::escapeArgument('svn+ssh://example.com/accompli/chrono'))))
+                    array($this->equalTo('git --version')),
+                    array($this->equalTo(sprintf('git ls-remote --heads %s', ProcessUtils::escapeArgument('svn+ssh://example.com/accompli/chrono'))), $this->equalTo(null), $this->equalTo(array('GIT_TERMINAL_PROMPT' => '0', 'GIT_ASKPASS' => 'echo')))
                 )
                 ->willReturnOnConsecutiveCalls(
-                        new ProcessExecutionResult(0, '', ''),
-                        new ProcessExecutionResult(1, '', '')
+                    new ProcessExecutionResult(0, '', ''),
+                    new ProcessExecutionResult(1, '', '')
                 );
         $provideTest[] = array('svn+ssh://example.com/accompli/chrono', $processExecutorMock, false);
 
@@ -146,17 +151,19 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
 
         $provideTest = array();
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+                ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('execute')
-                ->with($this->equalTo($branchesCommand))
+                ->with($this->equalTo($branchesCommand), $this->equalTo(null), $this->equalTo(array('GIT_TERMINAL_PROMPT' => '0', 'GIT_ASKPASS' => 'echo')))
                 ->willReturn(new ProcessExecutionResult(1, '', ''));
         $provideTest[] = array($processExecutorMock, array());
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+                ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('execute')
-                ->with($this->equalTo($branchesCommand))
+                ->with($this->equalTo($branchesCommand), $this->equalTo(null), $this->equalTo(array('GIT_TERMINAL_PROMPT' => '0', 'GIT_ASKPASS' => 'echo')))
                 ->willReturn(new ProcessExecutionResult(0, "6f8ce5e29cdcd894d6b7aaeb590e656f9348ac3a        refs/heads/master\n162eb4911ffc5e30496b5ed6c40c5182c1fd22d8        refs/heads/1.0\n", ''));
         $provideTest[] = array($processExecutorMock, array('6f8ce5e29cdcd894d6b7aaeb590e656f9348ac3a' => 'master', '162eb4911ffc5e30496b5ed6c40c5182c1fd22d8' => '1.0'));
 
@@ -174,17 +181,19 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
 
         $provideTest = array();
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+                ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('execute')
-                ->with($this->equalTo($tagsCommand))
+                ->with($this->equalTo($tagsCommand), $this->equalTo(null), $this->equalTo(array('GIT_TERMINAL_PROMPT' => '0', 'GIT_ASKPASS' => 'echo')))
                 ->willReturn(new ProcessExecutionResult(1, '', ''));
         $provideTest[] = array($processExecutorMock, array());
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+                ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('execute')
-                ->with($this->equalTo($tagsCommand))
+                ->with($this->equalTo($tagsCommand), $this->equalTo(null), $this->equalTo(array('GIT_TERMINAL_PROMPT' => '0', 'GIT_ASKPASS' => 'echo')))
                 ->willReturn(new ProcessExecutionResult(0, "bd82122129c6da32086988a89f8820e05128f1c9        refs/tags/0.1.0^{}\n3c6a664eea344ce2b9f1ce49922c4f12f57fca82        refs/tags/0.1.1^{}\n", ''));
         $provideTest[] = array($processExecutorMock, array('bd82122129c6da32086988a89f8820e05128f1c9' => '0.1.0', '3c6a664eea344ce2b9f1ce49922c4f12f57fca82' => '0.1.1'));
 
@@ -203,61 +212,65 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
 
         $provideTest = array();
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+                ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('isDirectory')
                 ->willReturn(false);
         $processExecutorMock->expects($this->once())
                 ->method('execute')
-                ->with($this->equalTo($cloneCommand))
+                ->with($this->equalTo($cloneCommand), $this->equalTo(null), $this->equalTo(array('GIT_TERMINAL_PROMPT' => '0', 'GIT_ASKPASS' => 'echo')))
                 ->willReturn(new ProcessExecutionResult(1, '', ''));
         $provideTest[] = array($processExecutorMock, false);
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+                ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('isDirectory')
                 ->willReturn(true);
         $processExecutorMock->expects($this->exactly(3))
                 ->method('execute')
                 ->withConsecutive(
-                        array($this->equalTo('git rev-parse --is-inside-work-tree'), $this->equalTo('/git/working-directory')),
-                        array($this->equalTo('git fetch')),
-                        array($this->equalTo($checkoutCommand), $this->equalTo('/git/working-directory'))
+                    array($this->equalTo('git rev-parse --is-inside-work-tree'), $this->equalTo('/git/working-directory'), $this->equalTo(null)),
+                    array($this->equalTo('git fetch'), $this->equalTo('/git/working-directory'), $this->equalTo(array('GIT_TERMINAL_PROMPT' => '0', 'GIT_ASKPASS' => 'echo'))),
+                    array($this->equalTo($checkoutCommand), $this->equalTo('/git/working-directory'), $this->equalTo(array('GIT_TERMINAL_PROMPT' => '0', 'GIT_ASKPASS' => 'echo')))
                 )
                 ->willReturnOnConsecutiveCalls(
-                        new ProcessExecutionResult(0, '', ''),
-                        new ProcessExecutionResult(0, '', ''),
-                        new ProcessExecutionResult(1, '', '')
+                    new ProcessExecutionResult(0, '', ''),
+                    new ProcessExecutionResult(0, '', ''),
+                    new ProcessExecutionResult(1, '', '')
                 );
         $provideTest[] = array($processExecutorMock, false);
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+                ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('isDirectory')
                 ->willReturn(false);
         $processExecutorMock->expects($this->once())
                 ->method('execute')
-                ->with($this->equalTo($cloneCommand))
+                ->with($this->equalTo($cloneCommand), $this->equalTo(null), $this->equalTo(array('GIT_TERMINAL_PROMPT' => '0', 'GIT_ASKPASS' => 'echo')))
                 ->willReturn(new ProcessExecutionResult(0, '', ''));
         $provideTest[] = array($processExecutorMock, true);
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+                ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('isDirectory')
                 ->willReturn(true);
         $processExecutorMock->expects($this->exactly(4))
                 ->method('execute')
                 ->withConsecutive(
-                        array($this->equalTo('git rev-parse --is-inside-work-tree'), $this->equalTo('/git/working-directory')),
-                        array($this->equalTo('git fetch')),
-                        array($this->equalTo($checkoutCommand), $this->equalTo('/git/working-directory')),
-                        array($this->equalTo('git pull'), $this->equalTo('/git/working-directory'))
+                    array($this->equalTo('git rev-parse --is-inside-work-tree'), $this->equalTo('/git/working-directory'), $this->equalTo(null)),
+                    array($this->equalTo('git fetch'), $this->equalTo('/git/working-directory'), $this->equalTo(array('GIT_TERMINAL_PROMPT' => '0', 'GIT_ASKPASS' => 'echo'))),
+                    array($this->equalTo($checkoutCommand), $this->equalTo('/git/working-directory'), $this->equalTo(array('GIT_TERMINAL_PROMPT' => '0', 'GIT_ASKPASS' => 'echo'))),
+                    array($this->equalTo('git pull'), $this->equalTo('/git/working-directory'), $this->equalTo(array('GIT_TERMINAL_PROMPT' => '0', 'GIT_ASKPASS' => 'echo')))
                 )
                 ->willReturnOnConsecutiveCalls(
-                        new ProcessExecutionResult(0, '', ''),
-                        new ProcessExecutionResult(0, '', ''),
-                        new ProcessExecutionResult(0, '', ''),
-                        new ProcessExecutionResult(0, '', '')
+                    new ProcessExecutionResult(0, '', ''),
+                    new ProcessExecutionResult(0, '', ''),
+                    new ProcessExecutionResult(0, '', ''),
+                    new ProcessExecutionResult(0, '', '')
                 );
         $provideTest[] = array($processExecutorMock, true);
 
