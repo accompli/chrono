@@ -39,13 +39,13 @@ class ProcessExecutor implements ProcessExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function execute($command, $workingDirectory = null)
+    public function execute($command, $workingDirectory = null, array $environmentVariables = null)
     {
         if ($workingDirectory === null) {
             $workingDirectory = $this->getWorkingDirectory();
         }
 
-        $process = new Process($command, $workingDirectory);
+        $process = new Process($command, $workingDirectory, $environmentVariables);
         $process->setTimeout(300);
         $process->run();
 
