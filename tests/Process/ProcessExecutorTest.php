@@ -2,6 +2,7 @@
 
 namespace Accompli\Chrono\Test;
 
+use Accompli\Chrono\Process\ProcessExecutionResult;
 use Accompli\Chrono\Process\ProcessExecutor;
 use PHPUnit_Framework_TestCase;
 
@@ -60,7 +61,7 @@ class ProcessExecutorTest extends PHPUnit_Framework_TestCase
         $processExecutor = new ProcessExecutor();
         $processExecutionResult = $processExecutor->execute('echo test');
 
-        $this->assertInstanceOf('Accompli\Chrono\Process\ProcessExecutionResult', $processExecutionResult);
+        $this->assertInstanceOf(ProcessExecutionResult::class, $processExecutionResult);
         $this->assertSame(0, $processExecutionResult->getExitCode());
         $this->assertSame('test'.PHP_EOL, $processExecutionResult->getOutput());
         $this->assertEquals('', $processExecutionResult->getErrorOutput());

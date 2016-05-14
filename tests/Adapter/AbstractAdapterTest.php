@@ -2,6 +2,8 @@
 
 namespace Accompli\Chrono\Test;
 
+use Accompli\Chrono\Adapter\AbstractAdapter;
+use Accompli\Chrono\Process\ProcessExecutorInterface;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -18,9 +20,10 @@ class AbstractAdapterTest extends PHPUnit_Framework_TestCase
     {
         $repositoryUrl = 'https://github.com/accompli/chrono.git';
         $repositoryDirectory = __DIR__;
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
+                ->getMock();
 
-        $abstractAdapter = $this->getMockBuilder('Accompli\Chrono\Adapter\AbstractAdapter')
+        $abstractAdapter = $this->getMockBuilder(AbstractAdapter::class)
                 ->setConstructorArgs(array($repositoryUrl, $repositoryDirectory, $processExecutorMock))
                 ->getMockForAbstractClass();
 

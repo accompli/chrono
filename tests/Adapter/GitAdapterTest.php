@@ -85,7 +85,7 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
     {
         $provideTest = array();
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
                 ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('execute')
@@ -93,7 +93,7 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
                 ->willReturn(new ProcessExecutionResult(1, '', ''));
         $provideTest[] = array('https://github.com/accompli/chrono.git', $processExecutorMock, false);
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
                 ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('execute')
@@ -101,7 +101,7 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
                 ->willReturn(new ProcessExecutionResult(0, '', ''));
         $provideTest[] = array('https://github.com/accompli/chrono.git', $processExecutorMock, true);
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
                 ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('execute')
@@ -109,7 +109,7 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
                 ->willReturn(new ProcessExecutionResult(0, '', ''));
         $provideTest[] = array('git@github.com:accompli/chrono.git', $processExecutorMock, true);
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
                 ->getMock();
         $processExecutorMock->expects($this->exactly(2))
                 ->method('execute')
@@ -123,7 +123,7 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
                 );
         $provideTest[] = array('user@example.com:accompli/chrono', $processExecutorMock, true);
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
                 ->getMock();
         $processExecutorMock->expects($this->exactly(2))
                 ->method('execute')
@@ -151,7 +151,7 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
 
         $provideTest = array();
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
                 ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('execute')
@@ -159,7 +159,7 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
                 ->willReturn(new ProcessExecutionResult(1, '', ''));
         $provideTest[] = array($processExecutorMock, array());
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
                 ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('execute')
@@ -181,7 +181,7 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
 
         $provideTest = array();
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
                 ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('execute')
@@ -189,7 +189,7 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
                 ->willReturn(new ProcessExecutionResult(1, '', ''));
         $provideTest[] = array($processExecutorMock, array());
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
                 ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('execute')
@@ -212,7 +212,7 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
 
         $provideTest = array();
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
                 ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('isDirectory')
@@ -223,7 +223,7 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
                 ->willReturn(new ProcessExecutionResult(1, '', ''));
         $provideTest[] = array($processExecutorMock, false);
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
                 ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('isDirectory')
@@ -242,7 +242,7 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
                 );
         $provideTest[] = array($processExecutorMock, false);
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
                 ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('isDirectory')
@@ -253,7 +253,7 @@ class GitAdapterTest extends PHPUnit_Framework_TestCase
                 ->willReturn(new ProcessExecutionResult(0, '', ''));
         $provideTest[] = array($processExecutorMock, true);
 
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
                 ->getMock();
         $processExecutorMock->expects($this->once())
                 ->method('isDirectory')

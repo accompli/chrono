@@ -3,6 +3,8 @@
 namespace Accompli\Chrono;
 
 use Accompli\Chrono\Adapter\AdapterInterface;
+use Accompli\Chrono\Adapter\GitAdapter;
+use Accompli\Chrono\Adapter\SubversionAdapter;
 use Accompli\Chrono\Process\ProcessExecutorInterface;
 use InvalidArgumentException;
 
@@ -40,8 +42,8 @@ class Repository implements RepositoryInterface
      * @var array
      */
     private $adapters = array(
-        'Accompli\Chrono\Adapter\GitAdapter',
-        'Accompli\Chrono\Adapter\SubversionAdapter',
+        GitAdapter::class,
+        SubversionAdapter::class,
     );
 
     /**
