@@ -67,6 +67,22 @@ class ProcessExecutorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests if ProcessExecutor::execute returns the expected result when using an environment variable.
+     */
+    public function testExecuteWithEnvironmentVariable()
+    {
+        $command = 'echo $FOO';
+        if (DIRECTORY_SEPARATOR === '\\') {
+            $command = 'echo %FOO%';
+        }
+
+        $processExecutor = new ProcessExecutor();
+        $processExecutionResult = $processExecutor->execute($command, null, array('FOO' => 'Bar'));
+
+        $this->assertSame('Bar'.PHP_EOL, $processExecutionResult->getOutput());
+    }
+
+    /**
      * Tests if ProcessExecutor::getLastProcessExecutionResult returns the same ProcessExecutionResult instance as ProcessExecutor::execute.
      */
     public function testGetLastProcessExecutionResult()

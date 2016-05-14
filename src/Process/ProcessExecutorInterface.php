@@ -23,10 +23,11 @@ interface ProcessExecutorInterface
      *
      * @param string      $command
      * @param string|null $workingDirectory
+     * @param array|null  $environmentVariables
      *
      * @return ProcessExecutionResult
      */
-    public function execute($command, $workingDirectory = null);
+    public function execute($command, $workingDirectory = null, array $environmentVariables = null);
 
     /**
      * Returns the ProcessExecutionResult instance of the last executed command.

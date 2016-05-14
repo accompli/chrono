@@ -25,7 +25,7 @@ class GitAdapter extends AbstractAdapter
             return true;
         }
 
-        $result = $this->processExecutor->execute(sprintf('git ls-remote --heads %s', ProcessUtils::escapeArgument($this->repositoryUrl)));
+        $result = $this->processExecutor->execute(sprintf('git ls-remote --heads %s', ProcessUtils::escapeArgument($this->repositoryUrl)), null, $this->getEnvironmentVariables());
         if ($result->isSuccessful()) {
             return true;
         }
@@ -40,7 +40,7 @@ class GitAdapter extends AbstractAdapter
     {
         $branches = array();
 
-        $result = $this->processExecutor->execute(sprintf('git ls-remote --heads %s', ProcessUtils::escapeArgument($this->repositoryUrl)));
+        $result = $this->processExecutor->execute(sprintf('git ls-remote --heads %s', ProcessUtils::escapeArgument($this->repositoryUrl)), null, $this->getEnvironmentVariables());
         if ($result->isSuccessful()) {
             foreach ($result->getOutputAsArray() as $branch) {
                 $matches = array();
@@ -60,7 +60,7 @@ class GitAdapter extends AbstractAdapter
     {
         $tags = array();
 
-        $result = $this->processExecutor->execute(sprintf('git ls-remote --tags %s', ProcessUtils::escapeArgument($this->repositoryUrl)));
+        $result = $this->processExecutor->execute(sprintf('git ls-remote --tags %s', ProcessUtils::escapeArgument($this->repositoryUrl)), null, $this->getEnvironmentVariables());
         if ($result->isSuccessful()) {
             foreach ($result->getOutputAsArray() as $tag) {
                 $matches = array();
@@ -82,15 +82,28 @@ class GitAdapter extends AbstractAdapter
 
         $escapedVersion = ProcessUtils::escapeArgument($version);
         if ($this->processExecutor->isDirectory($this->repositoryDirectory) && $this->processExecutor->execute('git rev-parse --is-inside-work-tree', $this->repositoryDirectory)->isSuccessful()) {
-            $checkoutSuccesful = ($this->processExecutor->execute('git fetch', $this->repositoryDirectory)->isSuccessful() && $this->processExecutor->execute(sprintf('git checkout %s', $escapedVersion), $this->repositoryDirectory)->isSuccessful() && $this->processExecutor->execute('git pull', $this->repositoryDirectory)->isSuccessful());
+            $checkoutSuccesful = ($this->processExecutor->execute('git fetch', $this->repositoryDirectory, $this->getEnvironmentVariables())->isSuccessful() && $this->processExecutor->execute(sprintf('git checkout %s', $escapedVersion), $this->repositoryDirectory, $this->getEnvironmentVariables())->isSuccessful() && $this->processExecutor->execute('git pull', $this->repositoryDirectory, $this->getEnvironmentVariables())->isSuccessful());
         } else {
             $escapedRepositoryUrl = ProcessUtils::escapeArgument($this->repositoryUrl);
             $escapedRepositoryDirectory = ProcessUtils::escapeArgument($this->repositoryDirectory);
 
-            $result = $this->processExecutor->execute(sprintf('git clone -b %s --single-branch %s %s', $escapedVersion, $escapedRepositoryUrl, $escapedRepositoryDirectory));
+            $result = $this->processExecutor->execute(sprintf('git clone -b %s --single-branch %s %s', $escapedVersion, $escapedRepositoryUrl, $escapedRepositoryDirectory), null, $this->getEnvironmentVariables());
             $checkoutSuccesful = $result->isSuccessful();
         }
 
         return $checkoutSuccesful;
+    }
+
+    /**
+     * Returns the environment variables for Git commands.
+     *
+     * @return array
+     */
+    private function getEnvironmentVariables()
+    {
+        return array(
+            'GIT_TERMINAL_PROMPT' => '0',
+            'GIT_ASKPASS' => 'echo',
+        );
     }
 }
