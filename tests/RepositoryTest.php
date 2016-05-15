@@ -2,7 +2,12 @@
 
 namespace Accompli\Chrono\Test;
 
+use Accompli\Chrono\Adapter\AdapterInterface;
+use Accompli\Chrono\Process\ProcessExecutor;
+use Accompli\Chrono\Process\ProcessExecutorInterface;
 use Accompli\Chrono\Repository;
+use Accompli\Chrono\Test\Adapter\AdapterMock;
+use InvalidArgumentException;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -19,7 +24,7 @@ class RepositoryTest extends PHPUnit_Framework_TestCase
     {
         $repositoryUrl = 'https://github.com/accompli/chrono.git';
         $repositoryDirectory = __DIR__;
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)->getMock();
 
         $repository = new Repository($repositoryUrl, $repositoryDirectory, $processExecutorMock);
 
@@ -35,12 +40,12 @@ class RepositoryTest extends PHPUnit_Framework_TestCase
     {
         $repositoryUrl = 'https://github.com/accompli/chrono.git';
         $repositoryDirectory = __DIR__;
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)->getMock();
 
         $repository = new Repository($repositoryUrl, $repositoryDirectory, $processExecutorMock);
-        $repository->setAdapters(array('Accompli\Chrono\Test\Adapter\AdapterMock'));
+        $repository->setAdapters(array(AdapterMock::class));
 
-        $this->assertAttributeSame(array('Accompli\Chrono\Test\Adapter\AdapterMock'), 'adapters', $repository);
+        $this->assertAttributeSame(array(AdapterMock::class), 'adapters', $repository);
     }
 
     /**
@@ -50,12 +55,12 @@ class RepositoryTest extends PHPUnit_Framework_TestCase
     {
         $repositoryUrl = 'https://github.com/accompli/chrono.git';
         $repositoryDirectory = __DIR__;
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)->getMock();
 
         $repository = new Repository($repositoryUrl, $repositoryDirectory, $processExecutorMock);
-        $repository->setAdapters(array('Accompli\Chrono\Test\Adapter\AdapterMock'));
+        $repository->setAdapters(array(AdapterMock::class));
 
-        $this->assertInstanceOf('Accompli\Chrono\Test\Adapter\AdapterMock', $repository->getAdapter());
+        $this->assertInstanceOf(AdapterMock::class, $repository->getAdapter());
     }
 
     /**
@@ -65,7 +70,7 @@ class RepositoryTest extends PHPUnit_Framework_TestCase
     {
         $repositoryUrl = 'https://github.com/accompli/chrono.git';
         $repositoryDirectory = __DIR__;
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)->getMock();
 
         $repository = new Repository($repositoryUrl, $repositoryDirectory, $processExecutorMock);
         $repository->setAdapters(array('DoesNotExistAdapter'));
@@ -80,10 +85,10 @@ class RepositoryTest extends PHPUnit_Framework_TestCase
     {
         $repositoryUrl = 'https://github.com/accompli/chrono.git';
         $repositoryDirectory = __DIR__;
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)->getMock();
 
         $repository = new Repository($repositoryUrl, $repositoryDirectory, $processExecutorMock);
-        $repository->setAdapters(array('Accompli\Chrono\Process\ProcessExecutor'));
+        $repository->setAdapters(array(ProcessExecutor::class));
 
         $this->assertNull($repository->getAdapter());
     }
@@ -95,17 +100,23 @@ class RepositoryTest extends PHPUnit_Framework_TestCase
     {
         $repositoryUrl = 'https://github.com/accompli/chrono.git';
         $repositoryDirectory = __DIR__;
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
+                ->getMock();
 
-        $adapterMock = $this->getMockBuilder('Accompli\Chrono\Adapter\AdapterInterface')->getMock();
-        $adapterMock->expects($this->once())->method('getBranches')->willReturn(array());
+        $adapterMock = $this->getMockBuilder(AdapterInterface::class)
+                ->getMock();
+        $adapterMock->expects($this->once())
+                ->method('getBranches')
+                ->willReturn(array());
 
-        $repository = $this->getMockBuilder('Accompli\Chrono\Repository')
+        $repository = $this->getMockBuilder(Repository::class)
                 ->setConstructorArgs(array($repositoryUrl, $repositoryDirectory, $processExecutorMock))
                 ->setMethods(array('getAdapter'))
                 ->getMock();
 
-        $repository->expects($this->once())->method('getAdapter')->willReturn($adapterMock);
+        $repository->expects($this->once())
+                ->method('getAdapter')
+                ->willReturn($adapterMock);
 
         $this->assertInternalType('array', $repository->getBranches());
     }
@@ -117,17 +128,23 @@ class RepositoryTest extends PHPUnit_Framework_TestCase
     {
         $repositoryUrl = 'https://github.com/accompli/chrono.git';
         $repositoryDirectory = __DIR__;
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
+                ->getMock();
 
-        $adapterMock = $this->getMockBuilder('Accompli\Chrono\Adapter\AdapterInterface')->getMock();
-        $adapterMock->expects($this->once())->method('getTags')->willReturn(array());
+        $adapterMock = $this->getMockBuilder(AdapterInterface::class)
+                ->getMock();
+        $adapterMock->expects($this->once())
+                ->method('getTags')
+                ->willReturn(array());
 
-        $repository = $this->getMockBuilder('Accompli\Chrono\Repository')
+        $repository = $this->getMockBuilder(Repository::class)
                 ->setConstructorArgs(array($repositoryUrl, $repositoryDirectory, $processExecutorMock))
                 ->setMethods(array('getAdapter'))
                 ->getMock();
 
-        $repository->expects($this->once())->method('getAdapter')->willReturn($adapterMock);
+        $repository->expects($this->once())
+                ->method('getAdapter')
+                ->willReturn($adapterMock);
 
         $this->assertInternalType('array', $repository->getTags());
     }
@@ -139,17 +156,24 @@ class RepositoryTest extends PHPUnit_Framework_TestCase
     {
         $repositoryUrl = 'https://github.com/accompli/chrono.git';
         $repositoryDirectory = __DIR__;
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
+                ->getMock();
 
-        $adapterMock = $this->getMockBuilder('Accompli\Chrono\Adapter\AdapterInterface')->getMock();
-        $adapterMock->expects($this->once())->method('checkout')->with($this->equalTo('1.0.0'))->willReturn(array());
+        $adapterMock = $this->getMockBuilder(AdapterInterface::class)
+                ->getMock();
+        $adapterMock->expects($this->once())
+                ->method('checkout')
+                ->with($this->equalTo('1.0.0'))
+                ->willReturn(array());
 
-        $repository = $this->getMockBuilder('Accompli\Chrono\Repository')
+        $repository = $this->getMockBuilder(Repository::class)
                 ->setConstructorArgs(array($repositoryUrl, $repositoryDirectory, $processExecutorMock))
                 ->setMethods(array('getAdapter'))
                 ->getMock();
 
-        $repository->expects($this->once())->method('getAdapter')->willReturn($adapterMock);
+        $repository->expects($this->once())
+                ->method('getAdapter')
+                ->willReturn($adapterMock);
 
         $repository->checkout('1.0.0');
     }
@@ -161,10 +185,11 @@ class RepositoryTest extends PHPUnit_Framework_TestCase
     {
         $repositoryUrl = 'https://github.com/accompli/chrono.git';
         $repositoryDirectory = __DIR__;
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
+                ->getMock();
 
         $repository = new Repository($repositoryUrl, $repositoryDirectory, $processExecutorMock);
-        $repository->setAdapters(array('Accompli\Chrono\Test\Adapter\AdapterMock'));
+        $repository->setAdapters(array(AdapterMock::class));
         $repository->getTags();
 
         $adapter = $repository->getAdapter();
@@ -173,18 +198,18 @@ class RepositoryTest extends PHPUnit_Framework_TestCase
 
     /**
      * Tests if Repository::initialize throws an InvalidArgumentException when no supported adapter is available.
-     *
-     * @expectedException        InvalidArgumentException
-     * @expectedExceptionMessage No adapter found to handle VCS repository "https://github.com/accompli/chrono.git".
      */
     public function testInitializeThrowsInvalidArgumentExceptionWhenNoSupportedAdapterAvailable()
     {
         $repositoryUrl = 'https://github.com/accompli/chrono.git';
         $repositoryDirectory = __DIR__;
-        $processExecutorMock = $this->getMockBuilder('Accompli\Chrono\Process\ProcessExecutorInterface')->getMock();
+        $processExecutorMock = $this->getMockBuilder(ProcessExecutorInterface::class)
+                ->getMock();
 
         $repository = new Repository($repositoryUrl, $repositoryDirectory, $processExecutorMock);
         $repository->setAdapters(array());
+
+        $this->setExpectedException(InvalidArgumentException::class, 'No adapter found to handle VCS repository "https://github.com/accompli/chrono.git".');
 
         $repository->getTags();
     }
