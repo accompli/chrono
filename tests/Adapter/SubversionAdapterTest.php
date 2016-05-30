@@ -179,7 +179,7 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
                 )
                 ->willReturnOnConsecutiveCalls(
                     new ProcessExecutionResult(1, '', ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0\n", '')
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0/\n", '')
                 );
         $provideTest[] = array($processExecutorMock, array('35' => '1.0'));
 
@@ -193,7 +193,7 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
                 )
                 ->willReturnOnConsecutiveCalls(
                     new ProcessExecutionResult(0, "     34 niels.ni              nov 22 22:10 ./\n     34 niels.ni              nov 22 22:10 file\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0\n", '')
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0/\n", '')
                 );
         $provideTest[] = array($processExecutorMock, array('34' => 'master', '35' => '1.0'));
 
@@ -224,7 +224,7 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
         $processExecutorMock->expects($this->once())
                 ->method('execute')
                 ->with($this->equalTo($tagsCommand))
-                ->willReturn(new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0\n", ''));
+                ->willReturn(new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0/\n", ''));
         $provideTest[] = array($processExecutorMock, array('35' => '0.1.0'));
 
         return $provideTest;
@@ -284,8 +284,8 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
                 )
                 ->willReturnOnConsecutiveCalls(
                     new ProcessExecutionResult(0, "     34 niels.ni              nov 22 22:10 ./\n     34 niels.ni              nov 22 22:10 file\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0/\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0/\n", ''),
                     new ProcessExecutionResult(1, '', '')
                 );
         $provideTest[] = array($processExecutorMock, false);
@@ -306,8 +306,8 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
                 )
                 ->willReturnOnConsecutiveCalls(
                     new ProcessExecutionResult(0, "     34 niels.ni              nov 22 22:10 ./\n     34 niels.ni              nov 22 22:10 file\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0/\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0/\n", ''),
                     new ProcessExecutionResult(0, '', '')
                 );
         $provideTest[] = array($processExecutorMock, true);
@@ -349,8 +349,8 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
                 )
                 ->willReturnOnConsecutiveCalls(
                     new ProcessExecutionResult(0, "     34 niels.ni              nov 22 22:10 ./\n     34 niels.ni              nov 22 22:10 file\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0/\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0/\n", ''),
                     new ProcessExecutionResult(0, '', ''),
                     new ProcessExecutionResult(1, '', '')
                 );
@@ -373,8 +373,8 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
                 )
                 ->willReturnOnConsecutiveCalls(
                     new ProcessExecutionResult(0, "     34 niels.ni              nov 22 22:10 ./\n     34 niels.ni              nov 22 22:10 file\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0/\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0/\n", ''),
                     new ProcessExecutionResult(0, '', ''),
                     new ProcessExecutionResult(0, '', '')
                 );
@@ -414,7 +414,7 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
                 )
                 ->willReturnOnConsecutiveCalls(
                     new ProcessExecutionResult(0, "     34 niels.ni              nov 22 22:10 ./\n     34 niels.ni              nov 22 22:10 file\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0/\n", ''),
                     new ProcessExecutionResult(0, '', ''),
                     new ProcessExecutionResult(0, '', '')
                 );

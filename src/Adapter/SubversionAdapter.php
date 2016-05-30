@@ -12,6 +12,13 @@ use Symfony\Component\Process\ProcessUtils;
 class SubversionAdapter extends AbstractAdapter
 {
     /**
+     * The regular expression to filter revision number and branch / tag name.
+     *
+     * @var string
+     */
+    const BRANCHES_TAGS_REGEX = '#^(?:\s+)?(\d+).*\s(\S+)\/$#';
+
+    /**
      * The path in the repository representing 'trunk' or 'master'.
      *
      * @var string
@@ -65,7 +72,7 @@ class SubversionAdapter extends AbstractAdapter
         if ($result->isSuccessful()) {
             foreach ($result->getOutputAsArray() as $branch) {
                 $matches = array();
-                if (preg_match('#^\s*(\S+).*?(\S+)\s*$#', $branch, $matches) && $matches[2] === './') {
+                if (preg_match(self::BRANCHES_TAGS_REGEX, $branch, $matches) === 1 && $matches[2] === '.') {
                     $branches[$matches[1]] = 'master';
                 }
             }
@@ -75,7 +82,7 @@ class SubversionAdapter extends AbstractAdapter
         if ($result->isSuccessful()) {
             foreach ($result->getOutputAsArray() as $branch) {
                 $matches = array();
-                if (preg_match('#^\s*(\S+).*?(\S+)\s*$#', $branch, $matches)) {
+                if (preg_match(self::BRANCHES_TAGS_REGEX, $branch, $matches) === 1) {
                     $branches[$matches[1]] = $matches[2];
                 }
             }
@@ -95,7 +102,7 @@ class SubversionAdapter extends AbstractAdapter
         if ($result->isSuccessful()) {
             foreach ($result->getOutputAsArray() as $tag) {
                 $matches = array();
-                if (preg_match('#^\s*(\S+).*?(\S+)\s*$#', $tag, $matches)) {
+                if (preg_match(self::BRANCHES_TAGS_REGEX, $tag, $matches) === 1) {
                     $tags[$matches[1]] = $matches[2];
                 }
             }
