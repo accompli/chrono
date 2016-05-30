@@ -153,8 +153,8 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
      */
     public function provideTestGetBranches()
     {
-        $trunkCommand = sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/trunk'));
-        $branchesCommand = sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/branches'));
+        $trunkCommand = sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/trunk'));
+        $branchesCommand = sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/branches'));
 
         $provideTest = array();
 
@@ -207,7 +207,7 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
      */
     public function provideTestGetTags()
     {
-        $tagsCommand = sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/tags'));
+        $tagsCommand = sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/tags'));
 
         $provideTest = array();
 
@@ -237,9 +237,9 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
      */
     public function provideTestCheckout()
     {
-        $getTrunkCommand = sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/trunk'));
-        $getBranchesCommand = sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/branches'));
-        $getTagsCommand = sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/tags'));
+        $getTrunkCommand = sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/trunk'));
+        $getBranchesCommand = sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/branches'));
+        $getTagsCommand = sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/tags'));
         $infoCommand = 'svn info --non-interactive';
         $trunkSwitchCommand = sprintf('svn switch --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/trunk'));
         $branchSwitchCommand = sprintf('svn switch --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/branches/1.0'));

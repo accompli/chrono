@@ -61,7 +61,7 @@ class SubversionAdapter extends AbstractAdapter
     {
         $branches = array();
 
-        $result = $this->processExecutor->execute(sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument($this->repositoryUrl.'/'.$this->trunkPath)));
+        $result = $this->processExecutor->execute(sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument($this->repositoryUrl.'/'.$this->trunkPath)));
         if ($result->isSuccessful()) {
             foreach ($result->getOutputAsArray() as $branch) {
                 $matches = array();
@@ -71,7 +71,7 @@ class SubversionAdapter extends AbstractAdapter
             }
         }
 
-        $result = $this->processExecutor->execute(sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument($this->repositoryUrl.'/'.$this->branchesPath)));
+        $result = $this->processExecutor->execute(sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument($this->repositoryUrl.'/'.$this->branchesPath)));
         if ($result->isSuccessful()) {
             foreach ($result->getOutputAsArray() as $branch) {
                 $matches = array();
@@ -91,7 +91,7 @@ class SubversionAdapter extends AbstractAdapter
     {
         $tags = array();
 
-        $result = $this->processExecutor->execute(sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument($this->repositoryUrl.'/'.$this->tagsPath)));
+        $result = $this->processExecutor->execute(sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument($this->repositoryUrl.'/'.$this->tagsPath)));
         if ($result->isSuccessful()) {
             foreach ($result->getOutputAsArray() as $tag) {
                 $matches = array();
@@ -121,8 +121,7 @@ class SubversionAdapter extends AbstractAdapter
         } else {
             $escapedRepositoryDirectory = ProcessUtils::escapeArgument($this->repositoryDirectory);
 
-            $result = $this->processExecutor->execute(sprintf('svn checkout --non-interactive %s %s', $escapedRepositoryUrlWithVersionPath, $escapedRepositoryDirectory));
-            $checkoutSuccesful = $result->isSuccessful();
+            $checkoutSuccesful = $this->processExecutor->execute(sprintf('svn checkout --non-interactive %s %s', $escapedRepositoryUrlWithVersionPath, $escapedRepositoryDirectory))->isSuccessful();
         }
 
         return $checkoutSuccesful;
