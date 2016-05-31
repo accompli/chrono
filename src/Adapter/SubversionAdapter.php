@@ -12,6 +12,13 @@ use Symfony\Component\Process\ProcessUtils;
 class SubversionAdapter extends AbstractAdapter
 {
     /**
+     * The regular expression to filter revision number and branch / tag name.
+     *
+     * @var string
+     */
+    const BRANCHES_TAGS_REGEX = '#^(?:\s+)?(\d+).*\s(\S+)\/$#';
+
+    /**
      * The path in the repository representing 'trunk' or 'master'.
      *
      * @var string
@@ -61,21 +68,21 @@ class SubversionAdapter extends AbstractAdapter
     {
         $branches = array();
 
-        $result = $this->processExecutor->execute(sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument($this->repositoryUrl.'/'.$this->trunkPath)));
+        $result = $this->processExecutor->execute(sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument($this->repositoryUrl.'/'.$this->trunkPath)));
         if ($result->isSuccessful()) {
             foreach ($result->getOutputAsArray() as $branch) {
                 $matches = array();
-                if (preg_match('#^\s*(\S+).*?(\S+)\s*$#', $branch, $matches) && $matches[2] === './') {
+                if (preg_match(self::BRANCHES_TAGS_REGEX, $branch, $matches) === 1 && $matches[2] === '.') {
                     $branches[$matches[1]] = 'master';
                 }
             }
         }
 
-        $result = $this->processExecutor->execute(sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument($this->repositoryUrl.'/'.$this->branchesPath)));
+        $result = $this->processExecutor->execute(sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument($this->repositoryUrl.'/'.$this->branchesPath)));
         if ($result->isSuccessful()) {
             foreach ($result->getOutputAsArray() as $branch) {
                 $matches = array();
-                if (preg_match('#^\s*(\S+).*?(\S+)\s*$#', $branch, $matches)) {
+                if (preg_match(self::BRANCHES_TAGS_REGEX, $branch, $matches) === 1) {
                     $branches[$matches[1]] = $matches[2];
                 }
             }
@@ -91,11 +98,11 @@ class SubversionAdapter extends AbstractAdapter
     {
         $tags = array();
 
-        $result = $this->processExecutor->execute(sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument($this->repositoryUrl.'/'.$this->tagsPath)));
+        $result = $this->processExecutor->execute(sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument($this->repositoryUrl.'/'.$this->tagsPath)));
         if ($result->isSuccessful()) {
             foreach ($result->getOutputAsArray() as $tag) {
                 $matches = array();
-                if (preg_match('#^\s*(\S+).*?(\S+)\s*$#', $tag, $matches)) {
+                if (preg_match(self::BRANCHES_TAGS_REGEX, $tag, $matches) === 1) {
                     $tags[$matches[1]] = $matches[2];
                 }
             }
@@ -121,8 +128,7 @@ class SubversionAdapter extends AbstractAdapter
         } else {
             $escapedRepositoryDirectory = ProcessUtils::escapeArgument($this->repositoryDirectory);
 
-            $result = $this->processExecutor->execute(sprintf('svn checkout --non-interactive %s %s', $escapedRepositoryUrlWithVersionPath, $escapedRepositoryDirectory));
-            $checkoutSuccesful = $result->isSuccessful();
+            $checkoutSuccesful = $this->processExecutor->execute(sprintf('svn checkout --non-interactive %s %s', $escapedRepositoryUrlWithVersionPath, $escapedRepositoryDirectory))->isSuccessful();
         }
 
         return $checkoutSuccesful;

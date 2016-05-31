@@ -153,8 +153,8 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
      */
     public function provideTestGetBranches()
     {
-        $trunkCommand = sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/trunk'));
-        $branchesCommand = sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/branches'));
+        $trunkCommand = sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/trunk'));
+        $branchesCommand = sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/branches'));
 
         $provideTest = array();
 
@@ -179,7 +179,7 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
                 )
                 ->willReturnOnConsecutiveCalls(
                     new ProcessExecutionResult(1, '', ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0\n", '')
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0/\n", '')
                 );
         $provideTest[] = array($processExecutorMock, array('35' => '1.0'));
 
@@ -193,7 +193,7 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
                 )
                 ->willReturnOnConsecutiveCalls(
                     new ProcessExecutionResult(0, "     34 niels.ni              nov 22 22:10 ./\n     34 niels.ni              nov 22 22:10 file\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0\n", '')
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0/\n", '')
                 );
         $provideTest[] = array($processExecutorMock, array('34' => 'master', '35' => '1.0'));
 
@@ -207,7 +207,7 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
      */
     public function provideTestGetTags()
     {
-        $tagsCommand = sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/tags'));
+        $tagsCommand = sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/tags'));
 
         $provideTest = array();
 
@@ -224,7 +224,7 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
         $processExecutorMock->expects($this->once())
                 ->method('execute')
                 ->with($this->equalTo($tagsCommand))
-                ->willReturn(new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0\n", ''));
+                ->willReturn(new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0/\n", ''));
         $provideTest[] = array($processExecutorMock, array('35' => '0.1.0'));
 
         return $provideTest;
@@ -237,9 +237,9 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
      */
     public function provideTestCheckout()
     {
-        $getTrunkCommand = sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/trunk'));
-        $getBranchesCommand = sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/branches'));
-        $getTagsCommand = sprintf('svn ls --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/tags'));
+        $getTrunkCommand = sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/trunk'));
+        $getBranchesCommand = sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/branches'));
+        $getTagsCommand = sprintf('svn ls --non-interactive --verbose %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/tags'));
         $infoCommand = 'svn info --non-interactive';
         $trunkSwitchCommand = sprintf('svn switch --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/trunk'));
         $branchSwitchCommand = sprintf('svn switch --non-interactive %s', ProcessUtils::escapeArgument('https://github.com/accompli/chrono/branches/1.0'));
@@ -284,8 +284,8 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
                 )
                 ->willReturnOnConsecutiveCalls(
                     new ProcessExecutionResult(0, "     34 niels.ni              nov 22 22:10 ./\n     34 niels.ni              nov 22 22:10 file\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0/\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0/\n", ''),
                     new ProcessExecutionResult(1, '', '')
                 );
         $provideTest[] = array($processExecutorMock, false);
@@ -306,8 +306,8 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
                 )
                 ->willReturnOnConsecutiveCalls(
                     new ProcessExecutionResult(0, "     34 niels.ni              nov 22 22:10 ./\n     34 niels.ni              nov 22 22:10 file\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0/\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0/\n", ''),
                     new ProcessExecutionResult(0, '', '')
                 );
         $provideTest[] = array($processExecutorMock, true);
@@ -349,8 +349,8 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
                 )
                 ->willReturnOnConsecutiveCalls(
                     new ProcessExecutionResult(0, "     34 niels.ni              nov 22 22:10 ./\n     34 niels.ni              nov 22 22:10 file\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0/\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0/\n", ''),
                     new ProcessExecutionResult(0, '', ''),
                     new ProcessExecutionResult(1, '', '')
                 );
@@ -373,8 +373,8 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
                 )
                 ->willReturnOnConsecutiveCalls(
                     new ProcessExecutionResult(0, "     34 niels.ni              nov 22 22:10 ./\n     34 niels.ni              nov 22 22:10 file\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0/\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 0.1.0/\n", ''),
                     new ProcessExecutionResult(0, '', ''),
                     new ProcessExecutionResult(0, '', '')
                 );
@@ -414,7 +414,7 @@ class SubversionAdapterTest extends PHPUnit_Framework_TestCase
                 )
                 ->willReturnOnConsecutiveCalls(
                     new ProcessExecutionResult(0, "     34 niels.ni              nov 22 22:10 ./\n     34 niels.ni              nov 22 22:10 file\n", ''),
-                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0\n", ''),
+                    new ProcessExecutionResult(0, "     35 niels.ni              nov 22 22:10 ./\n     35 niels.ni              nov 22 22:10 1.0/\n", ''),
                     new ProcessExecutionResult(0, '', ''),
                     new ProcessExecutionResult(0, '', '')
                 );
