@@ -21,7 +21,7 @@ class GitAdapter extends AbstractAdapter
             return false;
         }
 
-        if (preg_match('#(^git://|\.git$|git(?:olite)?@|//git\.|//github.com/)#i', $this->repositoryUrl)) {
+        if (preg_match('#(^git://|\.git$|git(?:olite)?@|//git\.|//github.com/)#i', $this->repositoryUrl) === 1) {
             return true;
         }
 
@@ -44,7 +44,7 @@ class GitAdapter extends AbstractAdapter
         if ($result->isSuccessful()) {
             foreach ($result->getOutputAsArray() as $branch) {
                 $matches = array();
-                if (preg_match('#^([a-f0-9]{40})\s+refs\/heads\/(\S+)$#', $branch, $matches)) {
+                if (preg_match('#^([a-f0-9]{40})\s+refs\/heads\/(\S+)$#', $branch, $matches) === 1) {
                     $branches[$matches[1]] = $matches[2];
                 }
             }
@@ -64,7 +64,7 @@ class GitAdapter extends AbstractAdapter
         if ($result->isSuccessful()) {
             foreach ($result->getOutputAsArray() as $tag) {
                 $matches = array();
-                if (preg_match('#^([a-f0-9]{40})\s+refs\/tags\/([\S]+)\^{}$#', $tag, $matches)) {
+                if (preg_match('#^([a-f0-9]{40})\s+refs\/tags\/([\S]+)\^{}$#', $tag, $matches) === 1) {
                     $tags[$matches[1]] = $matches[2];
                 }
             }
@@ -82,7 +82,27 @@ class GitAdapter extends AbstractAdapter
 
         $escapedVersion = ProcessUtils::escapeArgument($version);
         if ($this->processExecutor->isDirectory($this->repositoryDirectory) && $this->processExecutor->execute('git rev-parse --is-inside-work-tree', $this->repositoryDirectory)->isSuccessful()) {
-            $checkoutSuccesful = ($this->processExecutor->execute('git fetch', $this->repositoryDirectory, $this->getEnvironmentVariables())->isSuccessful() && $this->processExecutor->execute(sprintf('git checkout %s', $escapedVersion), $this->repositoryDirectory, $this->getEnvironmentVariables())->isSuccessful() && $this->processExecutor->execute('git pull', $this->repositoryDirectory, $this->getEnvironmentVariables())->isSuccessful());
+            $commands = array(
+                'git fetch',
+                sprintf('git checkout %s', $escapedVersion),
+            );
+
+            $checkoutSuccesful = true;
+            foreach ($commands as $command) {
+                $result = $this->processExecutor->execute($command, $this->repositoryDirectory, $this->getEnvironmentVariables());
+                if ($result->isSuccessful() === false) {
+                    $checkoutSuccesful = false;
+
+                    break;
+                }
+            }
+
+            $result = $this->processExecutor->execute('git branch', $this->repositoryDirectory, $this->getEnvironmentVariables());
+
+            $checkoutSuccesful = $checkoutSuccesful && $result->isSuccessful();
+            if (preg_match('#^ \*.*(?:no branch|HEAD detached at)#', $result->getOutput()) === 0) {
+                $checkoutSuccesful = $checkoutSuccesful && $this->processExecutor->execute('git pull', $this->repositoryDirectory, $this->getEnvironmentVariables())->isSuccessful();
+            }
         } else {
             $escapedRepositoryUrl = ProcessUtils::escapeArgument($this->repositoryUrl);
             $escapedRepositoryDirectory = ProcessUtils::escapeArgument($this->repositoryDirectory);
