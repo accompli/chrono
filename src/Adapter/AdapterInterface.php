@@ -12,8 +12,6 @@ interface AdapterInterface
     /**
      * Returns true when the adapter supports the repository URL.
      *
-     * @param string $repositoryUrl
-     *
      * @return bool
      */
     public function supportsRepository();
