@@ -6,6 +6,12 @@ This project adheres to [Semantic Versioning 2](http://semver.org/).
 ## [Unreleased]
 
 
+## [0.3.1] - 2016-06-07
+### Fixed
+* Only executing a `git pull` on a branch, which allows usage of git versions lower than 1.8. (#32)
+* Parsing of Subversion branches / tags. (#30)
+
+
 ## [0.3.0] - 2016-05-15
 ### Added
 * Retrieval of last `ProcessExecutionResult` from the `ProcessExecutor`. (#23)
@@ -17,7 +23,7 @@ This project adheres to [Semantic Versioning 2](http://semver.org/).
 
 ## [0.2.1] - 2016-03-25
 ### Fixed
-* Fixed updating the current branch of a git clone with the checkout command.
+* Updating the current branch of a git clone with the checkout command.
 
 
 ## [0.2.0] - 2016-03-21
@@ -36,7 +42,8 @@ Initial Chrono VCS wrapper release with checkout support for Git and Subversion.
 * Subversion Repository adapter.
 
 
-[Unreleased]: https://github.com/accompli/chrono/compare/0.3.0...HEAD
+[Unreleased]: https://github.com/accompli/chrono/compare/0.3.1...HEAD
+[0.3.1]: https://github.com/accompli/chrono/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/accompli/chrono/compare/0.2.1...0.3.0
 [0.2.1]: https://github.com/accompli/chrono/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/accompli/chrono/compare/0.1.0...0.2.0
